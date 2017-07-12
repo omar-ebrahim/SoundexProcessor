@@ -1,70 +1,93 @@
-﻿using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text;
 
-namespace SoundexProcessor
+public static class Soundex
 {
-    public static class Soundex
+    private const int RequiredSoundexLength = 4;
+
+    /// <summary>
+    /// Gets the soundex value for a word.
+    /// </summary>
+    public static string GetSoundexValue(string word)
     {
-        public static string GetSoundexValue(string word)
+        word = word.ToUpper();
+        StringBuilder soundex = new StringBuilder();
+
+        foreach (char ch in word)
         {
-            const int MaxSoundexCodeLength = 4;
-
-            var soundexCode = new StringBuilder();
-            var previousWasHOrW = false;
-
-            word = Regex.Replace(
-                word == null ? string.Empty : word.ToUpper(),
-                    @"[^\w\s]",
-                        string.Empty);
-
-            if (string.IsNullOrEmpty(word))
-                return string.Empty.PadRight(MaxSoundexCodeLength, '0');
-
-            soundexCode.Append(word.First());
-
-            for (var i = 1; i < word.Length; i++)
+            if (char.IsLetter(ch))
             {
-                var numberCharForCurrentLetter =
-                    GetCharNumberForLetter(word[i]);
-
-                if (i == 1 &&
-                        numberCharForCurrentLetter ==
-                            GetCharNumberForLetter(soundexCode[0]))
-                    continue;
-
-                if (soundexCode.Length > 2 && previousWasHOrW &&
-                        numberCharForCurrentLetter ==
-                            soundexCode[soundexCode.Length - 2])
-                    continue;
-
-                if (soundexCode.Length > 0 &&
-                        numberCharForCurrentLetter ==
-                            soundexCode[soundexCode.Length - 1])
-                    continue;
-
-                soundexCode.Append(numberCharForCurrentLetter);
-
-                previousWasHOrW = "HW".Contains(word[i]);
+                AddCharacterToSoundex(soundex, ch);
             }
-
-            return soundexCode
-                    .Replace("0", string.Empty)
-                        .ToString()
-                            .PadRight(MaxSoundexCodeLength, '0')
-                                .Substring(0, MaxSoundexCodeLength);
         }
 
-        private static char GetCharNumberForLetter(char letter)
+        FixSoundexLength(soundex);
+
+        return soundex.ToString();
+    }
+
+    /// <summary>
+    /// Adds a character or character code to the soundex <see cref="StringBuilder"/>
+    /// </summary>
+    /// <param name="soundex">The soundex <see cref="StringBuilder"/></param>
+    /// <param name="character">The character to add or get the character code for.</param>
+    private static void AddCharacterToSoundex(StringBuilder soundex, char character)
+    {
+        if (soundex.Length == 0)
         {
-            if ("BFPV".Contains(letter)) return '1';
-            if ("CGJKQSXZ".Contains(letter)) return '2';
-            if ("DT".Contains(letter)) return '3';
-            if ('L' == letter) return '4';
-            if ("MN".Contains(letter)) return '5';
-            if ('R' == letter) return '6';
-
-            return '0';
+            // Add the first letter to the soundex string
+            soundex.Append(character.ToString());
         }
+        else
+        {
+            string characterCode = Utils.GetCharacterCode(character);
+            if (PreviousCharacterIsDifferentToCurrentCharacter(soundex, characterCode))
+            {
+                soundex.Append(characterCode);
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// Fixes the length of the soundex <see cref="StringBuilder"/>.
+    /// If it's longer than 4, 
+    /// </summary>
+    /// <param name="soundex"></param>
+    private static void FixSoundexLength(StringBuilder soundex)
+    {
+        var length = soundex.Length;
+        if (length < RequiredSoundexLength)
+        {
+            PadWithZeroes(soundex, length);
+        }
+        else
+        {
+            TruncateToFourCharacters(soundex);
+        }
+    }
+
+    /// <summary>
+    /// Truncates the soundex <see cref="StringBuilder"/> to the requires soundex length of 4 characters.
+    /// </summary>
+    private static void TruncateToFourCharacters(StringBuilder soundex)
+    {
+        soundex.Length = RequiredSoundexLength;
+    }
+
+    /// <summary>
+    /// Pads out the soundex <see cref="StringBuilder"/> with zeroes if it is shorter than 4 characters.
+    /// </summary>
+    private static void PadWithZeroes(StringBuilder soundex, int length)
+    {
+        soundex.Append(new string('0', RequiredSoundexLength - length));
+    }
+
+    /// <summary>
+    /// Returns whether the previous character in the soundex <see cref="StringBuilder"/> is the same character.
+    /// </summary>
+    private static bool PreviousCharacterIsDifferentToCurrentCharacter(StringBuilder soundex, string characterCode)
+    {
+        var previousCharacterIndex = soundex.Length - 1;
+        return characterCode != soundex[previousCharacterIndex].ToString();
     }
 }

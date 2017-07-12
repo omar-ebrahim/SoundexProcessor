@@ -53,7 +53,7 @@ var surnameSoundex = result[0][0].Item5; // J212
 var surname = result[0][0].Item6.ToString("dd/MM/yyyy"); // 01/01/2000
 ```
 ### Dictionary key
-The dictionary key rounds down the integer part of the soundex value to the nearest 25, 50 or 100 depending on the sensitivity in the MatchSensitivity enum. If the sensitivity is set to MatchSensitivity of VeryHigh, then the soundex values will not be adjusted at all.
+The dictionary key rounds down the integer part of the soundex value to the nearest 25, 50 or 100 depending on the sensitivity in the MatchSensitivity enum. If the sensitivity is set to MatchSensitivity.VeryHigh (0), then the soundex values will not be adjusted at all.
 
 The processor will process the list of names and produce a Dictionary of possible duplicates, using the adjusted forenames and surname soundexes and date of birth as the key. For example, processing the list above with the sensitivity set to MatchSensitivity.Medium (50) produces a key to use as the grouping value.
 ```

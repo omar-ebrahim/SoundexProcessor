@@ -25,12 +25,12 @@ var result = processor.Process(list);
 ```
 This will process the list of names and produce a Dictionary of possible duplicates, using the forenames soundex and surname soundex rounded down to the nearest whole number (set by the MatchSensitivity Enum) and date of birth as the key. For example, processing the list above with the sensitivity set to MatchSensitivity.Medium (50) produces
 ```
-Key: M600 J200 01/01/2000
-Value (list)
+Key (string): M600 J200 01/01/2000
+Value (list of Tuples)
   1: mark jacobs (M620 J212). DOB: 01/01/2000
   2: marc jacobson (M620 J212). DOB: 01/01/2000
 Key: D100 H400 01/01/2000
-Value (list)
+Value (list of tuples)
   3: david hollister (D130 H423). DOB: 01/01/2000
   3: dave hollister (D100 H423). DOB: 01/01/2000
 ```

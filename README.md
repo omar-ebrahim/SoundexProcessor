@@ -1,6 +1,4 @@
 # SoundexProcessor
-Soundex Processor
-
 Soundex processor to sort through records to group them into possible duplicates.
 
 ## How to install:

@@ -5,7 +5,10 @@ Soundex processor to sort through records to group them into possible duplicates
 
 ## How to install:
 
-Download and load into Visual Studio (this was compiled on Visual Studio Community 2017). Feel free to add this to your own projects, either private or commercial.
+Download and load the solution into Visual Studio (this was compiled on Visual Studio Community 2017). 
+Alternatively if you don't want to add another solution to your project, download the [SoundexProcessor.dll](https://github.com/omar-ebrahim/SoundexProcessor/tree/master/DLLs) and add as a reference to your project instead.
+
+Feel free to add this to your own projects, either private or commercial.
 
 ## How to use
 

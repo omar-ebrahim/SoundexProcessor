@@ -23,10 +23,11 @@ list.Add(new Tuple<int, string, string, DateTime>(4, "dave", "hollister", new Da
 
 var processor = new Processor(MatchSensitivity.Medium);
 Dictionary<string, List<Tuple<int, string, string, string, string, DateTime>>> result = processor.Process(list);
+```
 
 ### Using the results
 Below show how to use the results returned from the soundex processor, assuming the dictionary contains an entry with a non-empty list of tuples.
-```
+
 #### Item1: person ID
 ```
 var personId = result[0][0].Item1; // 1

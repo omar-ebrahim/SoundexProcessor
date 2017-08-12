@@ -55,17 +55,9 @@ public class Processor
 
             var key = $"{forenamesSoundexInitial}{forenamesCode} {surnameSoundexInitial}{surnameCode} {dob.ToString("dd/MM/yyyy")}";
 
-            if (groupedSoundexList.Count == 0)
+            if (groupedSoundexList.Count == 0 || !groupedSoundexList.ContainsKey(key))
             {
-                var list = new List<Tuple<int, string, string, string, string, DateTime>>();
-                list.Add(new Tuple<int, string, string, string, string, DateTime>(id, forenames, surname, forenamesSoundex, surnameSoundex, dob));
-                groupedSoundexList.Add(key, list);
-            }
-            else if (!groupedSoundexList.ContainsKey(key))
-            {
-                var list = new List<Tuple<int, string, string, string, string, DateTime>>();
-                list.Add(new Tuple<int, string, string, string, string, DateTime>(id, forenames, surname, forenamesSoundex, surnameSoundex, dob));
-                groupedSoundexList.Add(key, list);
+                AddNewSoundexValue(groupedSoundexList, key, id, forenames, surname, forenamesSoundex, surnameSoundex, dob);
             }
             else
             {
@@ -74,6 +66,26 @@ public class Processor
         }
 
         return groupedSoundexList;
+    }
+
+    /// <summary>
+    /// Adds a new soundex value.
+    /// </summary>
+    /// <param name="groupedSoundexList">The grouped list to add to</param>
+    /// <param name="key">The key in which to group the soundex values.</param>
+    /// <param name="id">The ID of the person to add.</param>
+    /// <param name="forenames">The forenames of the person.</param>
+    /// <param name="surname">The surname of the person.</param>
+    /// <param name="forenamesSoundex">The forenames soundex value.</param>
+    /// <param name="surnameSoundex">The surname soundex value.</param>
+    /// <param name="dob">The date of birth.</param>
+    private static void AddNewSoundexValue(Dictionary<string, List<Tuple<int, string, string, string, string, DateTime>>> groupedSoundexList, string key, int id, string forenames, string surname, string forenamesSoundex, string surnameSoundex, DateTime dob)
+    {
+        var list = new List<Tuple<int, string, string, string, string, DateTime>>
+        {
+            new Tuple<int, string, string, string, string, DateTime>(id, forenames, surname, forenamesSoundex, surnameSoundex, dob)
+        };
+        groupedSoundexList.Add(key, list);
     }
 
     /// <summary>
@@ -94,7 +106,6 @@ public class Processor
 
             soundexList.Add(new Tuple<int, string, string, string, string, DateTime>(id, forenames, surname, forenamesSoundex, surnameSoundex, dob));
         }
-
         return soundexList;
     }
 

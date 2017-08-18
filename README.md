@@ -8,6 +8,8 @@ Alternatively if you don't want to add another solution to your project, downloa
 
 Feel free to add this to your own projects, either private or commercial.
 
+__N.B:__ The compiled DLL is version 1.0, which has the methods and objects as shown below. Version 1.2 no longer uses a Tuple and uses a Person object to aid readability and use
+
 ## How to use
 
 ### Method calls

@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Processor.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Processor\Processor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MatchSensitivity.cs" />
-    <Compile Include="Soundex.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Enums\MatchSensitivity.cs" />
+    <Compile Include="System\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
